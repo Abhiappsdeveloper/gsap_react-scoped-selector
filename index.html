@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>React scoped selector</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;600&display=swap');
+
+        body {
+            font-family: "Signika Negative", sans-serif, Arial;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-color: #28292b;
+            color: #fffce1;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 400;
+        }
+
+        #app {
+            display: flex;
+            justify-content: center;
+        }
+
+        .box {
+            width: 80px;
+            height: 80px;
+            background: dodgerblue;
+            margin: 10px;
+            float: left;
+            opacity: 0;
+            border-radius: 6px;
+            transform: scale(0.3);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src='https://assets.codepen.io/16327/gsap-latest-beta.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js'></script>
+    <script>
+        let { useRef, useEffect } = React;
+
+        let data = [
+            { id: 0 },
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
+            { id: 4 }];
+
+
+        let Box = () => {
+            return /*#__PURE__*/React.createElement("div", { className: "box" });
+        };
+
+        let App = () => {
+            let el = useRef();
+            let q = gsap.utils.selector(el);
+
+            useEffect(() => {
+
+                // The component has been rendered, so we can now select
+                // descendants of the component, including descendants
+                // nested inside of other components    
+                gsap.to(q(".box"), {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1,
+                    stagger: 0.1,
+                    repeat: -1,
+                    repeatDelay: 1,
+                    yoyo: true
+                });
+
+            }, []);
+
+            return /*#__PURE__*/(
+                React.createElement("div", { ref: el }, /*#__PURE__*/
+                    React.createElement("h1", null, "React scoped selector"),
+                    data.map(item => /*#__PURE__*/React.createElement(Box, { key: item.id }))));
+
+
+        };
+
+        ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.querySelector('#app'));
+    </script>
+
+</body>
+
+</html>
